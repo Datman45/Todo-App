@@ -25,21 +25,21 @@ npm run dev
 
 After login, user can manage their task
 
-### Create New Todo task
+### Create Task
 - Click **Create New**
 - Fill in required field (except checkboxes)
 - Click **Create**
 
-### Todo Task
+### Update Task
 - Click **Edit**
 - Modify required field
 - Click **Update**
 
-### Todo Task
+### Delete Task
 - Click **Delete**
 - On the new page press **Delete**
 
-## Task filtering
+## Task Filtering
 Tasks can be filtered using the checkboxes above the task list:
 - Show Completed
 - Show Archived
