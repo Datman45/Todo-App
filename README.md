@@ -3,21 +3,43 @@
 ## How to install
 - Clone or download project
 - Open the project in Visual Studio Code
-- Build and run project
 
 ## How to run project
 - Write or copy in terminal
 ``` bash
-npm install bootstrap
+npm install
 ```
 - Write or copy in terminal
 ``` bash
 npm run dev
 ```
 - Control + left click on the local link
-- Login menu will appear
+- Home page will appear
 
-## How to log in
-- Write any username and password (minimum 1 character)
-- Choose 1 game mode
+## Authentication
+- Click login link in the navigation menu on top of the page
+- Use provided account credintials
 - Click submit
+
+## Manage Todo Task
+
+After login, user can manage their task
+
+### Create New Todo task
+- Click **Create New**
+- Fill in required field (except checkboxes)
+- Click **Create**
+
+### Todo Task
+- Click **Edit**
+- Modify required field
+- Click **Update**
+
+### odo Task
+- Click **Delete**
+- On the new page press **Delete**
+
+## Task filtering
+Tasks can be filtered using the checkboxes above the task list:
+- Show Completed
+- Show Archived
