@@ -35,7 +35,7 @@ After login, user can manage their task
 - Modify required field
 - Click **Update**
 
-### odo Task
+### Todo Task
 - Click **Delete**
 - On the new page press **Delete**
 
