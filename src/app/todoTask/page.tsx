@@ -50,9 +50,8 @@ export default function TodoTasks() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const result = await todoCategoryService.getAllAsync(
-					accountInfo
-				);
+				const result =
+					await todoCategoryService.getAllAsync(accountInfo);
 
 				setTodoCategoryData(result.data!);
 				if (result.errors) {
@@ -63,7 +62,7 @@ export default function TodoTasks() {
 				console.log("TodoCategories data:", result.data);
 			} catch (error) {
 				setErrorMessage(
-					"Fetch Data failed - " + (error as Error).message
+					"Fetch Data failed - " + (error as Error).message,
 				);
 			}
 		};
@@ -76,9 +75,8 @@ export default function TodoTasks() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const result = await todoPriorityService.getAllAsync(
-					accountInfo
-				);
+				const result =
+					await todoPriorityService.getAllAsync(accountInfo);
 
 				setTodoPriorityData(result.data!);
 				if (result.errors) {
@@ -89,7 +87,7 @@ export default function TodoTasks() {
 				console.log("TodoCategories data:", result.data);
 			} catch (error) {
 				setErrorMessage(
-					"Fetch Data failed - " + (error as Error).message
+					"Fetch Data failed - " + (error as Error).message,
 				);
 			}
 		};
@@ -109,7 +107,7 @@ export default function TodoTasks() {
 				}
 
 				return true;
-		  })
+			})
 		: [];
 
 	return (
@@ -126,7 +124,7 @@ export default function TodoTasks() {
 						onChange={() => setShowCompleted((v) => !v)}
 					/>
 					<label className="form-check-label" htmlFor="showCompleted">
-						Show Completed
+						Show Completed Tasks
 					</label>
 				</div>
 				<div className="form-check form-check-inline">
@@ -138,7 +136,7 @@ export default function TodoTasks() {
 						onChange={() => setShowArchived((v) => !v)}
 					/>
 					<label className="form-check-label" htmlFor="showArchived">
-						Show Archived
+						Show Archived Tasks
 					</label>
 				</div>
 			</div>
@@ -152,16 +150,16 @@ export default function TodoTasks() {
 				<table className="table">
 					<thead>
 						<tr>
-							<th>TaskName</th>
-							<th>TaskSort</th>
-							<th>CreatedDt</th>
-							<th>DueDt</th>
-							<th>IsCompleted</th>
-							<th>IsArchived</th>
-							<th>TodoCategory</th>
-							<th>TodoPriority</th>
-							<th>SyncDt</th>
-							<th>User</th>
+							<th>Title</th>
+							<th>Order</th>
+							<th>Created On</th>
+							<th>Due Date</th>
+							<th>Completed</th>
+							<th>Archived</th>
+							<th>Category</th>
+							<th>Priority</th>
+							<th>Synced Date</th>
+							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -178,21 +176,21 @@ export default function TodoTasks() {
 										{todoCategoryData?.find(
 											(category) =>
 												category.id ===
-												item.todoCategoryId
+												item.todoCategoryId,
 										)?.categoryName ?? ""}
 									</td>
 									<td>
 										{todoPriorityData?.find(
 											(priority) =>
 												priority.id ===
-												item.todoPriorityId
+												item.todoPriorityId,
 										)?.priorityName ?? ""}
 									</td>
 									<td>
 										{item.syncDt
 											? new Date(
-													item.syncDt
-											  ).toLocaleString()
+													item.syncDt,
+												).toLocaleString()
 											: "Not Synced"}
 									</td>
 									<td>

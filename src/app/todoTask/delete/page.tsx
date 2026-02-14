@@ -28,7 +28,7 @@ function Delete() {
 		try {
 			var result = await todoTaskService.deleteAsync(
 				String(idParam),
-				accountInfo
+				accountInfo,
 			);
 			if (result.errors) {
 				setErrorMessage(result.errors[0]);
@@ -51,7 +51,7 @@ function Delete() {
 			try {
 				const result = await todoTaskService.getByIdAsync(
 					String(idParam),
-					accountInfo
+					accountInfo,
 				);
 
 				setByIdData(result.data!);
@@ -61,7 +61,7 @@ function Delete() {
 				}
 			} catch (error) {
 				setErrorMessage(
-					"Fetch Data failed - " + (error as Error).message
+					"Fetch Data failed - " + (error as Error).message,
 				);
 			}
 		};
@@ -76,7 +76,7 @@ function Delete() {
 					style={{ minWidth: 350, maxWidth: 500 }}
 				>
 					<h2 className="text-center text-danger mb-3">
-						Delete Gps Session
+						Delete Todo Task
 					</h2>
 					<div className="alert alert-warning text-center">
 						Are you sure you want to delete this session?
@@ -84,39 +84,43 @@ function Delete() {
 					<table className="table table-sm mb-4">
 						<tbody>
 							<tr>
-								<th>TaskName</th>
+								<th>Title</th>
 								<td>{getByIdData?.taskName}</td>
 							</tr>
 							<tr>
-								<th>TaskSort</th>
+								<th>Order</th>
 								<td>{getByIdData?.taskSort}</td>
 							</tr>
 							<tr>
-								<th>CreatedDt</th>
+								<th>Created Date</th>
 								<td>{getByIdData?.createdDt}</td>
 							</tr>
 							<tr>
-								<th>DueDt</th>
+								<th>Due Date</th>
 								<td>{getByIdData?.dueDt}</td>
 							</tr>
 							<tr>
-								<th>IsCompleted</th>
-								<td>{getByIdData?.isCompleted}</td>
+								<th>Completed</th>
+								<td>
+									{getByIdData?.isCompleted ? "yes" : "no"}
+								</td>
 							</tr>
 							<tr>
-								<th>IsArchived</th>
-								<td>{getByIdData?.isArchived}</td>
+								<th>Archived</th>
+								<td>
+									{getByIdData?.isArchived ? "yes" : "no"}
+								</td>
 							</tr>
 							<tr>
-								<th>TodoCategory</th>
+								<th>Category</th>
 								<td>{getByIdData?.todoCategoryId}</td>
 							</tr>
 							<tr>
-								<th>TodoPriority</th>
+								<th>Priority</th>
 								<td>{getByIdData?.todoPriorityId}</td>
 							</tr>
 							<tr>
-								<th>SyncDt</th>
+								<th>Synced Date</th>
 								<td>{getByIdData?.syncDt}</td>
 							</tr>
 						</tbody>

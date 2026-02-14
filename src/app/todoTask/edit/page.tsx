@@ -64,11 +64,12 @@ function Edit() {
 	}, [accountInfo, router]);
 
 	useEffect(() => {
+		if (!accountInfo?.token) return;
+
 		const fetchData = async () => {
 			try {
-				const result = await todoCategoryService.getAllAsync(
-					accountInfo
-				);
+				const result =
+					await todoCategoryService.getAllAsync(accountInfo);
 
 				setTodoCategoryData(result.data!);
 				if (result.errors) {
@@ -79,12 +80,12 @@ function Edit() {
 				console.log("TodoCategories data:", result.data);
 			} catch (error) {
 				setErrorMessage(
-					"Fetch Data failed - " + (error as Error).message
+					"Fetch Data failed - " + (error as Error).message,
 				);
 			}
 		};
 		fetchData();
-	}, []);
+	}, [accountInfo?.token]);
 
 	const [todoPriorityData, setTodoPriorityData] = useState<ITodoPriority[]>();
 	const todoPriorityService = new TodoPriorityService();
@@ -92,9 +93,8 @@ function Edit() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const result = await todoPriorityService.getAllAsync(
-					accountInfo
-				);
+				const result =
+					await todoPriorityService.getAllAsync(accountInfo);
 
 				setTodoPriorityData(result.data!);
 				if (result.errors) {
@@ -105,26 +105,41 @@ function Edit() {
 				console.log("TodoCategories data:", result.data);
 			} catch (error) {
 				setErrorMessage(
-					"Fetch Data failed - " + (error as Error).message
+					"Fetch Data failed - " + (error as Error).message,
 				);
 			}
 		};
 		fetchData();
-	}, []);
+	}, [accountInfo?.token]);
 
 	const todoTaskService = new TodoTaskService();
 	const [todoTaskData, setTodoTaskData] = useState<ITodoTask>();
+
+	function toDateTimeLocal(value?: string) {
+		if (!value) return "";
+
+		const d = new Date(value);
+		const pad = (n: number) => String(n).padStart(2, "0");
+
+		return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+	}
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const result = await todoTaskService.getByIdAsync(
 					String(idParam),
-					accountInfo
+					accountInfo,
 				);
 
-				setTodoTaskData(result.data!);
-				reset(result.data!);
+				const data = result.data!;
+				setTodoTaskData(data);
+
+				reset({
+					...data,
+					dueDt: toDateTimeLocal(data.dueDt),
+				});
+
 				if (result.errors) {
 					setErrorMessage(result.errors[0]);
 					return;
@@ -133,7 +148,7 @@ function Edit() {
 				console.log("TodoTask data:", result.data);
 			} catch (error) {
 				setErrorMessage(
-					"Fetch Data failed - " + (error as Error).message
+					"Fetch Data failed - " + (error as Error).message,
 				);
 			}
 		};
@@ -165,7 +180,7 @@ function Edit() {
 			var result = await todoTaskService.updateAsync(
 				inputData,
 				idParam,
-				accountInfo
+				accountInfo,
 			);
 			if (result.errors) {
 				setErrorMessage(result.errors[0]);
@@ -178,12 +193,12 @@ function Edit() {
 	return (
 		<>
 			<div className="form-template">
-				<h1>TodoTask Create</h1>
+				<h1>TodoTask Edit</h1>
 				{errorMessage}
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className="mb-3">
 						<label htmlFor="name" className="form-label">
-							TaskName
+							Title
 						</label>
 						<input
 							type="text"
@@ -211,7 +226,7 @@ function Edit() {
 					</div>
 					<div className="mb-3">
 						<label htmlFor="taskSort" className="form-label">
-							Task Sort
+							Order
 						</label>
 						<input
 							type="number"
@@ -233,7 +248,7 @@ function Edit() {
 					</div>
 					<div className="mb-3 mw-300">
 						<label htmlFor="dueDt" className="form-label ">
-							DueDt
+							Due Date
 						</label>
 						<input
 							type="datetime-local"
@@ -241,8 +256,22 @@ function Edit() {
 							id="dueDt"
 							{...register("dueDt", {
 								required: "Due Date required",
+								validate: (value) => {
+									const selectedDate = new Date(value);
+									const now = new Date();
+
+									return (
+										selectedDate >= now ||
+										"Due Date cannot be in the past"
+									);
+								},
 							})}
 						/>
+						{errors.dueDt && (
+							<span className="text-danger field-validation-valid">
+								{errors.dueDt.message}
+							</span>
+						)}
 					</div>
 					<div className="mb-3 form-check">
 						<input
@@ -255,7 +284,7 @@ function Edit() {
 							htmlFor="isCompleted"
 							className="form-check-label"
 						>
-							IsCompleted
+							Completed
 						</label>
 					</div>
 					<div className="mb-3 form-check">
@@ -269,12 +298,12 @@ function Edit() {
 							htmlFor="isArchived"
 							className="form-check-label"
 						>
-							IsArchived
+							Archived
 						</label>
 					</div>
 					<div className="mb-3 mw-300">
 						<label htmlFor="todoCategoryId" className="form-label ">
-							TodoCategoryId
+							Category
 						</label>
 						<select
 							className="form-control"
@@ -294,7 +323,7 @@ function Edit() {
 					</div>
 					<div className="mb-3 mw-300">
 						<label htmlFor="todoPriorityId" className="form-label ">
-							TodoPriorityId
+							Priority
 						</label>
 						<select
 							className="form-control"
@@ -317,7 +346,7 @@ function Edit() {
 					</button>
 					<button
 						type="button"
-						className="btn btn-secondary"
+						className="btn btn-secondary ms-2"
 						onClick={() => router.push("/todoTask")}
 					>
 						Cancel

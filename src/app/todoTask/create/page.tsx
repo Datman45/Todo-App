@@ -53,9 +53,8 @@ export default function Create() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const result = await todoCategoryService.getAllAsync(
-					accountInfo
-				);
+				const result =
+					await todoCategoryService.getAllAsync(accountInfo);
 
 				setTodoCategoryData(result.data!);
 				if (result.errors) {
@@ -66,7 +65,7 @@ export default function Create() {
 				console.log("TodoCategories data:", result.data);
 			} catch (error) {
 				setErrorMessage(
-					"Fetch Data failed - " + (error as Error).message
+					"Fetch Data failed - " + (error as Error).message,
 				);
 			}
 		};
@@ -79,9 +78,8 @@ export default function Create() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const result = await todoPriorityService.getAllAsync(
-					accountInfo
-				);
+				const result =
+					await todoPriorityService.getAllAsync(accountInfo);
 
 				setTodoPriorityData(result.data!);
 				if (result.errors) {
@@ -92,7 +90,7 @@ export default function Create() {
 				console.log("TodoCategories data:", result.data);
 			} catch (error) {
 				setErrorMessage(
-					"Fetch Data failed - " + (error as Error).message
+					"Fetch Data failed - " + (error as Error).message,
 				);
 			}
 		};
@@ -142,7 +140,7 @@ export default function Create() {
 				<form onSubmit={handleSubmit(onsubmit)}>
 					<div className="mb-3">
 						<label htmlFor="name" className="form-label">
-							TaskName
+							Title
 						</label>
 						<input
 							type="text"
@@ -170,7 +168,7 @@ export default function Create() {
 					</div>
 					<div className="mb-3">
 						<label htmlFor="taskSort" className="form-label">
-							Task Sort
+							Order
 						</label>
 						<input
 							type="number"
@@ -192,7 +190,7 @@ export default function Create() {
 					</div>
 					<div className="mb-3 mw-300">
 						<label htmlFor="dueDt" className="form-label ">
-							DueDt
+							Due Date
 						</label>
 						<input
 							type="datetime-local"
@@ -200,8 +198,22 @@ export default function Create() {
 							id="dueDt"
 							{...register("dueDt", {
 								required: "Due Date required",
+								validate: (value) => {
+									const selectedDate = new Date(value);
+									const now = new Date();
+
+									return (
+										selectedDate >= now ||
+										"Due Date cannot be in the past"
+									);
+								},
 							})}
 						/>
+						{errors.dueDt && (
+							<span className="text-danger field-validation-valid">
+								{errors.dueDt.message}
+							</span>
+						)}
 					</div>
 					<div className="mb-3 form-check">
 						<input
@@ -214,7 +226,7 @@ export default function Create() {
 							htmlFor="isCompleted"
 							className="form-check-label"
 						>
-							IsCompleted
+							Completed
 						</label>
 					</div>
 					<div className="mb-3 form-check">
@@ -228,12 +240,12 @@ export default function Create() {
 							htmlFor="isArchived"
 							className="form-check-label"
 						>
-							IsArchived
+							Archived
 						</label>
 					</div>
 					<div className="mb-3 mw-300">
 						<label htmlFor="todoCategoryId" className="form-label ">
-							TodoCategoryId
+							Category
 						</label>
 						<select
 							className="form-control"
@@ -253,7 +265,7 @@ export default function Create() {
 					</div>
 					<div className="mb-3 mw-300">
 						<label htmlFor="todoPriorityId" className="form-label ">
-							TodoPriorityId
+							Priority
 						</label>
 						<select
 							className="form-control"

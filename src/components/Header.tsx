@@ -14,7 +14,7 @@ const Header = () => {
 		<header>
 			<nav className="navbar navbar-expand-lg bg-body-tertiary">
 				<div className="container-fluid">
-					<div className="navbar-brand"></div>
+					<div className="navbar-brand">Todo Task Management App</div>
 					<button
 						className="navbar-toggler"
 						type="button"
@@ -85,7 +85,7 @@ const Header = () => {
 										router.push("/");
 									}}
 								>
-									Loggout
+									Logout
 								</a>
 							)}
 						</ul>
