@@ -1,9 +1,11 @@
 /** @type {import('next').NextConfig} */
-const base_path = process.env.BASE_URL;
+const basePath = process.env.BASE_URL || "";
 
 const nextConfig = {
-  output: "export",
-  basePath: base_path,
+	output: "export",
+	basePath,
+	assetPrefix: basePath,
+	trailingSlash: true,
 };
 
-module.exports = nextConfig; // use module.exports for JS files
+module.exports = nextConfig;
